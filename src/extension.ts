@@ -149,20 +149,27 @@ export async function activate(context: vscode.ExtensionContext) {
     const sendMessageCommand = vscode.commands.registerCommand('vscode-skype.sendMessage', async () => {
         await sendMessage();
     });
+
+    const contactList = vscode.commands.registerCommand('vscode-skype.contactList', async () => {
+        let contacts: any = getUserList();
+        await vscode.window.showQuickPick(contacts);
+    });
     createStatusBarItem();
-    context.subscriptions.push(getConfigCommand, setConfigCommand, sendMessageCommand);
+    context.subscriptions.push(getConfigCommand, setConfigCommand, sendMessageCommand, contactList);
    
 
     async function getSkypeContacts(){
         const contacts: any = [];
         for (const contact of await api.getContacts()) {
             if(!contacts[contact.mri]){
+                console.log(contact);
                 contacts.push({id: contact.mri, label: contact.displayName});
             }
         }
 
         for (const contact of await api.getConversations()) {
             if(contact.threadProperties){
+                console.log(contact);
                 contacts.push({id: contact.id, label: contact.threadProperties.topic});
             }
         }
