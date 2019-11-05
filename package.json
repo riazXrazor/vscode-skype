@@ -1,9 +1,9 @@
 {
     "name": "vscode-skype",
     "displayName": "vscode-skype",
-    "description": "Send skype messages from withing vscode code :)",
+    "description": "Send skype messages from within vscode :)",
     "publisher": "riazXrazor",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "engines": {
         "vscode": "^1.39.0"
     },
@@ -48,8 +48,21 @@
             {
                 "command": "vscode-skype.sendMessage",
                 "title": "vscode-skype: Send Skype Message"
+            },
+            {
+                "command": "vscode-skype.sendToSkype",
+                "title": "Send to skype"
             }
         ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "editorHasSelection",
+                    "command": "vscode-skype.sendToSkype",
+                    "group": "modification"
+                }
+            ]
+        },
         "keybindings": [
             {
                 "command": "vscode-skype.sendMessage",
@@ -60,6 +73,11 @@
                 "command": "vscode-skype.contactList",
                 "key": "alt+l",
                 "mac": "cmd+alt+l"
+            },
+            {
+                "command": "vscode-skype.sendToSkype",
+                "key": "alt+c",
+                "mac": "cmd+alt+c"
             }
         ],
         "configuration": {

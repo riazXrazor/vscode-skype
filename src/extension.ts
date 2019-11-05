@@ -69,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 customSetSkypeConfig();
                 return;
             }
-            const password = await vscode.window.showInputBox({ ignoreFocusOut: true, placeHolder: 'user.password: "12345@abc"', prompt: 'Enter password that you use for your skype account.' });
+            const password = await vscode.window.showInputBox({ ignoreFocusOut: true,password: true, placeHolder: 'user.password: "12345@abc"', prompt: 'Enter password that you use for your skype account.' });
             if(!password) {
                 vscode.window.showInformationMessage('user.password should not be empty');
                 customSetSkypeConfig(username);
@@ -85,6 +85,8 @@ export async function activate(context: vscode.ExtensionContext) {
                     "user.password": password
                 };
                 await setSkypeConfig(newConfig);
+                
+                checkForConfig();
             } catch(e){
                 vscode.window.showErrorMessage('Invalid skype credentials.', e);
             } finally {
@@ -136,7 +138,33 @@ export async function activate(context: vscode.ExtensionContext) {
 
     }
 
-    //commands
+    
+    const sendToSkype = vscode.commands.registerTextEditorCommand('vscode-skype.sendToSkype', async () => {
+
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {            
+            return;
+        }
+
+        let selection = editor.selection;
+        let text = editor.document.getText(selection);
+        if (!text) {            
+            return;
+        }
+
+        try {
+            // const msg = await vscode.window.showInputBox({ value: text, ignoreFocusOut: true, placeHolder: 'Type your message', prompt: 'Enter the skype message' });
+            let contacts: any = getUserList();
+            const pickContacts: any = await vscode.window.showQuickPick(contacts, { ignoreFocusOut: true, placeHolder: 'Select contact to send the message: ' });
+            if(pickContacts){
+                await api.sendMessage({textContent: text}, pickContacts.id);
+                vscode.window.showInformationMessage(`Skype message successfully sent to ${pickContacts.label}`);
+            }
+        } catch (_ignorred) {
+            console.log(`${MESSAGE_PREFIX}Error while sending message. ${JSON.stringify(_ignorred)}`);
+        }
+
+    });
 
     const getConfigCommand = vscode.commands.registerCommand('vscode-skype.getConfig', async () => {
         setSkypeConfig();
@@ -154,22 +182,21 @@ export async function activate(context: vscode.ExtensionContext) {
         let contacts: any = getUserList();
         await vscode.window.showQuickPick(contacts);
     });
+
     createStatusBarItem();
-    context.subscriptions.push(getConfigCommand, setConfigCommand, sendMessageCommand, contactList);
+    context.subscriptions.push(getConfigCommand, setConfigCommand, sendMessageCommand, contactList,sendToSkype);
    
 
     async function getSkypeContacts(){
         const contacts: any = [];
         for (const contact of await api.getContacts()) {
             if(!contacts[contact.mri]){
-                console.log(contact);
                 contacts.push({id: contact.mri, label: contact.displayName});
             }
         }
 
         for (const contact of await api.getConversations()) {
             if(contact.threadProperties){
-                console.log(contact);
                 contacts.push({id: contact.id, label: contact.threadProperties.topic});
             }
         }
