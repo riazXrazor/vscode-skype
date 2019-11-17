@@ -1,144 +1,180 @@
 {
-    "name": "vscode-skype",
-    "displayName": "vscode-skype",
-    "description": "Send skype messages from within vscode :)",
-    "publisher": "riazXrazor",
-    "version": "0.0.4",
-    "engines": {
-        "vscode": "^1.39.0"
-    },
-    "icon": "media/icon.png",
-    "galleryBanner": {
-        "color": "#000",
-        "theme": "dark"
-    },
-    "categories": [
-        "Other"
-    ],
-    "license": "MIT",
-    "keywords": [
-        "vscode-skype",
-        "skype",
-        "messaging",
-        "communication"
-    ],
-    "bugs": {
-        "url": "https://github.com/riazXrazor/vscode-skype/issues",
-        "email": "formulahendry@gmail.com"
-    },
-    "homepage": "https://github.com/riazXrazor/vscode-skype/blob/master/README.md",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/riazXrazor/vscode-skype.git"
-    },
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "vscode-skype.getConfig",
-                "title": "vscode-skype: Get Config"
-            },
-            {
-                "command": "vscode-skype.setConfig",
-                "title": "vscode-skype: Set Config"
-            },
-            {
-                "command": "vscode-skype.sendMessage",
-                "title": "vscode-skype: Send Skype Message"
-            },
-            {
-                "command": "vscode-skype.sendToSkype",
-                "title": "Send to skype"
-            }
-        ],
-        "menus": {
-            "editor/context": [
-                {
-                    "when": "editorHasSelection",
-                    "command": "vscode-skype.sendToSkype",
-                    "group": "modification"
-                }
-            ]
-        },
-        "keybindings": [
-            {
-                "command": "vscode-skype.sendMessage",
-                "key": "alt+s",
-                "mac": "cmd+alt+s"
-            },
-            {
-                "command": "vscode-skype.contactList",
-                "key": "alt+l",
-                "mac": "cmd+alt+l"
-            },
-            {
-                "command": "vscode-skype.sendToSkype",
-                "key": "alt+c",
-                "mac": "cmd+alt+c"
-            }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "vscode-skype configuration",
-            "properties": {
-                "vscode-skype.configList": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "title": "inner objects",
-                        "properties": {
-                            "user.username": {
-                                "type": "string",
-                                "description": "username/phone/email associated with skype account"
-                            },
-                            "user.pasword": {
-                                "type": "string",
-                                "description": "password associated with skype account"
-                            }
-                        }
-                    },
-                    "default": [],
-                    "description": "List of skype accounts in format [{'user.username': 'riaz@optimizeitsystems.com', 'user.password': '12345@abc'}]"
-                },
-                "vscode-skype.userList": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "title": "inner objects",
-                        "properties": {
-                            "user.id": {
-                                "type": "string"
-                            },
-                            "user.label": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "default": []
-                }
-            }
+  "name": "vscode-skype",
+  "displayName": "vscode-skype",
+  "description": "Send skype messages from within vscode :)",
+  "publisher": "riazXrazor",
+  "version": "0.0.5",
+  "engines": {
+    "vscode": "^1.39.0"
+  },
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#000",
+    "theme": "dark"
+  },
+  "categories": [
+    "Other"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "vscode-skype",
+    "skype",
+    "messaging",
+    "communication"
+  ],
+  "bugs": {
+    "url": "https://github.com/riazXrazor/vscode-skype/issues",
+    "email": "formulahendry@gmail.com"
+  },
+  "homepage": "https://github.com/riazXrazor/vscode-skype/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/riazXrazor/vscode-skype.git"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vscode-skype",
+          "title": "Skype",
+          "icon": "media/dep.svg"
         }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "test": "node ./node_modules/vscode/bin/test"
+    "views": {
+      "vscode-skype": [
+        {
+          "id": "skypeUsers",
+          "name": "Users"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "jsonOutline",
+          "name": "Json Outline",
+          "when": "jsonOutlineEnabled"
+        },
+        {
+          "id": "ftpExplorer",
+          "name": "FTP Explorer"
+        },
+        {
+          "id": "fileExplorer",
+          "name": "File Explorer"
+        },
+        {
+          "id": "testView",
+          "name": "Test View"
+        }
+      ]
     },
-    "devDependencies": {
-        "@types/glob": "^7.1.1",
-        "@types/mocha": "^5.2.7",
-        "@types/node": "^12.11.7",
-        "@types/vscode": "^1.39.0",
-        "glob": "^7.1.5",
-        "mocha": "^6.2.2",
-        "tslint": "^5.20.0",
-        "typescript": "^3.8.0-dev.20191102",
-        "vscode-test": "^1.2.2"
+    "commands": [
+      {
+        "command": "vscode-skype.getConfig",
+        "title": "vscode-skype: Get Config"
+      },
+      {
+        "command": "vscode-skype.setConfig",
+        "title": "vscode-skype: Set Config"
+      },
+      {
+        "command": "vscode-skype.sendMessage",
+        "title": "vscode-skype: Send Skype Message"
+      },
+      {
+        "command": "vscode-skype.sendToSkype",
+        "title": "Send to skype"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection",
+          "command": "vscode-skype.sendToSkype",
+          "group": "modification"
+        }
+      ]
     },
-    "dependencies": {
-        "skype-http": "git+https://github.com/riazXrazor/skype-http.git"
+    "keybindings": [
+      {
+        "command": "vscode-skype.sendMessage",
+        "key": "alt+s",
+        "mac": "cmd+alt+s"
+      },
+      {
+        "command": "vscode-skype.contactList",
+        "key": "alt+l",
+        "mac": "cmd+alt+l"
+      },
+      {
+        "command": "vscode-skype.sendToSkype",
+        "key": "alt+c",
+        "mac": "cmd+alt+c"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "vscode-skype configuration",
+      "properties": {
+        "vscode-skype.configList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "inner objects",
+            "properties": {
+              "user.username": {
+                "type": "string",
+                "description": "username/phone/email associated with skype account"
+              },
+              "user.pasword": {
+                "type": "string",
+                "description": "password associated with skype account"
+              }
+            }
+          },
+          "default": [],
+          "description": "List of skype accounts in format [{'user.username': 'riaz@optimizeitsystems.com', 'user.password': '12345@abc'}]"
+        },
+        "vscode-skype.userList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "inner objects",
+            "properties": {
+              "user.id": {
+                "type": "string"
+              },
+              "user.label": {
+                "type": "string"
+              }
+            }
+          },
+          "default": []
+        }
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.39.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "tslint": "^5.20.0",
+    "typescript": "^3.8.0-dev.20191102",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+    "skype-http": "git+https://github.com/riazXrazor/skype-http.git"
+  }
 }
